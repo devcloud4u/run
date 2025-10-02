@@ -5,13 +5,13 @@ OpenWRT tabanlı router'larda ZeroTier VPN'i tek komutla kurup yapılandıran ot
 ## 🚀 Hızlı Kurulum
 
 ```bash
-curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | bash
+curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | sh
 ```
 
 veya
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | bash
+wget -qO- https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | sh
 ```
 
 ## ✨ Özellikler
@@ -34,7 +34,7 @@ wget -qO- https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-in
 ### 1. Scripti Çalıştırın
 
 ```bash
-curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | bash
+curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | sh
 ```
 
 ### 2. Network ID Girin
