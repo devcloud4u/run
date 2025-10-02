@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # OpenWRT ZeroTier Otomatik Kurulum Scripti
-# Kullanım: curl -sL https://yourserver.com/zt-install.sh | bash
+# Kullanım: curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-install.sh | sh
 
 set -e
 
@@ -12,7 +12,8 @@ echo ""
 
 # 1. ZeroTier Network ID al
 echo "🔹 Adım 1: ZeroTier Network ID"
-read -p "ZeroTier Network ID girin: " NETWORK_ID
+printf "ZeroTier Network ID girin: "
+read NETWORK_ID
 
 if [ -z "$NETWORK_ID" ]; then
     echo "❌ Network ID boş olamaz!"
@@ -25,7 +26,8 @@ echo "🔹 Adım 2: Profil Seçimi"
 echo "1) cstmrs   (Müşteriler)"
 echo "2) sdwan    (SD-WAN)"
 echo "3) datacenters (Veri Merkezleri)"
-read -p "Seçiminiz (1-3): " CHOICE
+printf "Seçiminiz (1-3): "
+read CHOICE
 
 case $CHOICE in
     1) ALIAS="cstmrs" ;;
@@ -108,7 +110,8 @@ while true; do
     echo "1. Bu cihazı ONAYLAYIN (Authorize)"
     echo "2. Cihaza bir IP ADRESİ atayın"
     echo ""
-    read -p "İşlemi tamamladıktan sonra ENTER'a basın..." 
+    printf "İşlemi tamamladıktan sonra ENTER'a basın..."
+    read dummy
 
     # 7. Interface bilgilerini al
     echo ""
@@ -125,8 +128,9 @@ while true; do
         echo "❌ ZeroTier interface bulunamadı!"
         echo "⚠️  Lütfen ZeroTier Controller'da cihazın onaylandığından emin olun."
         echo ""
-        read -p "Tekrar denemek için ENTER'a basın (veya Ctrl+C ile çıkın)..." 
-        continue  # Döngünün başına dön
+        printf "Tekrar denemek için ENTER'a basın (veya Ctrl+C ile çıkın)..."
+        read dummy
+        continue
     fi
 
     # IP adresini al
@@ -137,8 +141,9 @@ while true; do
         echo "❌ IP adresi alınamadı!"
         echo "⚠️  Lütfen ZeroTier Controller'da IP ataması yaptığınızdan emin olun."
         echo ""
-        read -p "Tekrar denemek için ENTER'a basın (veya Ctrl+C ile çıkın)..." 
-        continue  # Döngünün başına dön
+        printf "Tekrar denemek için ENTER'a basın (veya Ctrl+C ile çıkın)..."
+        read dummy
+        continue
     fi
 
     # Her şey başarılı, döngüden çık
