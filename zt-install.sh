@@ -133,7 +133,7 @@ while true; do
         continue
     fi
 
-    # IP adresini al
+    # IP adresini al (CIDR formatında, örn: 10.147.20.5/13)
     ZT_IP=$(ip -o -f inet addr show "$ZT_IFACE" 2>/dev/null | awk '{print $4}')
 
     if [ -z "$ZT_IP" ]; then
@@ -146,11 +146,44 @@ while true; do
         continue
     fi
 
+    # IP ve subnet'i ayır
+    ZT_IP_ADDR="${ZT_IP%/*}"
+    ZT_SUBNET="${ZT_IP#*/}"
+    
+    # CIDR'ı netmask'e çevir
+    case "$ZT_SUBNET" in
+        8) ZT_NETMASK="255.0.0.0" ;;
+        9) ZT_NETMASK="255.128.0.0" ;;
+        10) ZT_NETMASK="255.192.0.0" ;;
+        11) ZT_NETMASK="255.224.0.0" ;;
+        12) ZT_NETMASK="255.240.0.0" ;;
+        13) ZT_NETMASK="255.248.0.0" ;;
+        14) ZT_NETMASK="255.252.0.0" ;;
+        15) ZT_NETMASK="255.254.0.0" ;;
+        16) ZT_NETMASK="255.255.0.0" ;;
+        17) ZT_NETMASK="255.255.128.0" ;;
+        18) ZT_NETMASK="255.255.192.0" ;;
+        19) ZT_NETMASK="255.255.224.0" ;;
+        20) ZT_NETMASK="255.255.240.0" ;;
+        21) ZT_NETMASK="255.255.248.0" ;;
+        22) ZT_NETMASK="255.255.252.0" ;;
+        23) ZT_NETMASK="255.255.254.0" ;;
+        24) ZT_NETMASK="255.255.255.0" ;;
+        25) ZT_NETMASK="255.255.255.128" ;;
+        26) ZT_NETMASK="255.255.255.192" ;;
+        27) ZT_NETMASK="255.255.255.224" ;;
+        28) ZT_NETMASK="255.255.255.240" ;;
+        29) ZT_NETMASK="255.255.255.248" ;;
+        30) ZT_NETMASK="255.255.255.252" ;;
+        *) ZT_NETMASK="255.248.0.0" ;; # Varsayılan /13
+    esac
+
     # Her şey başarılı, döngüden çık
     echo "✅ Interface bilgileri alındı:"
     echo "   Network ID: $NETWORK_ID"
     echo "   Interface: $ZT_IFACE"
-    echo "   IP Adresi: ${ZT_IP%/*}"
+    echo "   IP Adresi: $ZT_IP_ADDR/$ZT_SUBNET"
+    echo "   Netmask: $ZT_NETMASK"
     break
 done
 
@@ -160,8 +193,8 @@ echo "🔹 Adım 7: Network Interface Oluşturma"
 uci set network.${ZONE_NAME}='interface'
 uci set network.${ZONE_NAME}.ifname="$ZT_IFACE"
 uci set network.${ZONE_NAME}.proto='static'
-uci set network.${ZONE_NAME}.ipaddr="${ZT_IP%/*}"
-uci set network.${ZONE_NAME}.netmask="255.248.0.0"
+uci set network.${ZONE_NAME}.ipaddr="$ZT_IP_ADDR"
+uci set network.${ZONE_NAME}.netmask="$ZT_NETMASK"
 
 # Firewall zone'a interface ekle
 uci add_list firewall.${ZONE_NAME}.network="${ZONE_NAME}"
@@ -186,7 +219,8 @@ echo "📋 Yapılandırma Özeti:"
 echo "   Profil: $ZONE_NAME"
 echo "   Network ID: $NETWORK_ID"
 echo "   Interface: $ZT_IFACE"
-echo "   IP Adresi: ${ZT_IP%/*}/13"
+echo "   IP Adresi: $ZT_IP_ADDR/$ZT_SUBNET"
+echo "   Netmask: $ZT_NETMASK"
 echo ""
 echo "🔥 Firewall Zone: $ZONE_NAME (LAN, WAN ile routing aktif)"
 echo ""
