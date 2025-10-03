@@ -23,6 +23,7 @@ curl -sL https://raw.githubusercontent.com/devcloud4u/run/refs/heads/main/zt-ins
 - ✅ **Tek Komut Kurulum** - Tüm işlemler otomatik
 - ✅ **Profil Desteği** - Müşteriler, SD-WAN, Datacenter profilleri
 - ✅ **Akıllı Hata Yönetimi** - Hata durumunda otomatik tekrar deneme
+- ✅ **Dinamik Subnet** - ZeroTier'dan gelen subnet otomatik algılanır (/8 - /30)
 - ✅ **Firewall Otomasyonu** - Zone ve forwarding kuralları otomatik oluşturulur
 - ✅ **Kullanıcı Dostu** - Adım adım yönlendirme
 
@@ -100,7 +101,7 @@ Script aşağıdaki işlemleri otomatik olarak gerçekleştirir:
 
 4. **Network Interface**
    - Static IP yapılandırması
-   - `/13` netmask (255.248.0.0)
+   - Dinamik netmask (ZeroTier'dan gelen subnet'e göre otomatik)
    - Firewall zone'a bağlama
 
 ## 📁 Oluşturulan Yapılandırma
@@ -123,7 +124,7 @@ config interface 'zt_sdwan'
     option ifname 'ztxxxxxxxxx'
     option proto 'static'
     option ipaddr '10.147.20.5'
-    option netmask '255.248.0.0'
+    option netmask '255.248.0.0'  # ZeroTier'dan gelen subnet'e göre otomatik ayarlanır
 ```
 
 **Firewall** (`/etc/config/firewall`):
